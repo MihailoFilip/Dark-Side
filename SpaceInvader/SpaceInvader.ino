@@ -8,7 +8,7 @@
  LED 3.3V
  GND GND
  */
-
+enum{defender,shot,invader};
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <TFT_ILI9163C.h>
@@ -80,8 +80,8 @@ struct defender
 
 
 struct shot{
-  char X;
-  char Y;
+   short X;
+   short Y;
 };
 
 
@@ -207,7 +207,7 @@ void spawn_defender()
 {
   char X=63;
   char Y=120;
-st_defender.X=63;
+/*st_defender.X=63;
 st_defender.Y=120;
 tft.drawPixel(X,Y,TEAL);
 tft.drawPixel(X+1,Y,TEAL);
@@ -216,35 +216,87 @@ tft.drawPixel(X-1,Y,TEAL);
 tft.drawPixel(X-2,Y,TEAL);
 tft.drawPixel(X,Y-1,TEAL);
 tft.drawPixel(X,Y-2,TEAL);
+*/
+Draw(X,Y,1);
 }
 
 
 
-void Spawn_Invader(char X,char Y)
+void Spawn_Invader(char X,char Y,char type)
 {
 
   
       initializare_invader(X, Y);
-      DrawSpaceInvader(X,Y);
+      Draw(X,Y,type);
     
 }
 
-void DrawSpaceInvader(char X, char Y)
+void Draw(char X, char Y,char type)
 {
-/*struct pixel type1 []={{X,Y},{X-1,Y},{X-2,Y},{X-3,Y},{X-4,Y},{X-5,Y},{X-4,Y-1},{X-3,Y-1},{X-3,Y-2},
+  
+struct pixel type1 []={{X,Y},{X-1,Y},{X-2,Y},{X-3,Y},{X-4,Y},{X-5,Y},{X-4,Y-1},{X-3,Y-1},{X-3,Y-2},
                         {X-2,Y-2},{X-2,Y-3},{X-3,Y-4},{X-1,Y-1},{X-1,Y-2},{X-5,Y+1},{X-5,Y+2},{X-3,Y+1},
                         {X-3,Y+2},{X-2,Y+1},{X-2,Y+3},{X-1,Y+1},{X-1,Y+2},
-                        {X+1,Y},{X+2,Y},{X+3,Y},{X+4,Y},{X+5,Y},{X+4,Y-1},{X+3,Y-1},{X+3,Y-2},
+                        {X+1,Y},{X+2,Y},{X+3,Y},{X+4,Y},{X+5,Y},{X+4,Y-1},{X+3,Y-1},{X+3,Y-2},  
                         {X+2,Y-2},{X+2,Y-3},{X+3,Y-4},{X+1,Y-1},{X+1,Y-2},{X+5,Y+1},{X+5,Y+2},{X+3,Y+1},
-                        {X+3,Y+2},{X+2,Y+1},{X+2,Y+3},{X+1,Y+1},{X+1,Y+2},{X,Y-1},{X,Y-2},{X,Y+1},{-1,-1}};*/
-  char i;
-  //for(i=0;i<sizeof(type1),i++)
+                        {X+3,Y+2},{X+2,Y+1},{X+2,Y+3},{X+1,Y+1},{X+1,Y+2},{X,Y-1},{X,Y-2},{X,Y+1},{-1,-1}};
+                        
+struct pixel type2 []={{X,Y},{X-1,Y},{X-2,Y},{X-3,Y},{X-3,Y-1},{X-2,Y-1},{X-2,Y-2},{X-2,Y-3},{X-1,Y-2},{X-1,Y-4},{X-1,Y-4}
+                        ,{X-2,Y+2},{X-2,Y+3},{X-3,Y+2},
+                        {X+1,Y},{X+2,Y},{X+3,Y},{X+3,Y-1},{X+2,Y-1},{X+2,Y-2},{X+2,Y-3},{X+1,Y-2},{X+1,Y-4},{X+1,Y-4}
+                        ,{X+2,Y+2},{X+2,Y+3},{X+3,Y+2},
+                        {X,Y-1},{X,Y-2},{X,Y-3},{X,Y-4},{X,Y+1}};
+
+struct pixel type3 []={{X,Y},{X,Y-1},{X,Y-2},{X,Y-3},{X-1,Y},{X-2,Y},{X-3,Y},{X-4,Y},{X-5,Y},{X-6,Y},{X-1,Y-1},{X-1,Y-2},{X-1,Y-3},
+                       {X-2,Y-2},{X-2,Y-3},{X-3,Y-2},{X-4,Y-1},{X-4,Y-2},{X-4,Y-2},{X-1,Y-1},{X-6,Y+1},{X-1,Y+2},{X-2,Y+1},{X-3,Y+1},{X-3,Y+3},{X-4,Y+1},{X-4,Y+2},{X-4,Y+3},{X-4,Y+2},
+                      {X+2,Y},{X+3,Y},{X+4,Y},{X+5,Y},{X+6,Y},{X+1,Y-1},{X+1,Y-2},{X+1,Y-3},{X+1,Y},
+                       {X+2,Y-2},{X+2,Y-3},{X+3,Y-2},{X+4,Y-1},{X+4,Y-2},{X+4,Y-2},{X+1,Y-1},{X+6,Y+1},{X+1,Y+2},{X+2,Y+1},{X+3,Y+1},{X+3,Y+3},{X+4,Y+1},{X+4,Y+2},{X+4,Y+3},{X+4,Y+2},
+                        {X,Y+2}};
+  struct pixel defender []= { {X,Y},{X,Y+1},{X,Y+2},{X,Y+3},{X,Y+4},{X,Y+5},{X,Y+6},{X,Y-1},{X,Y-2},{X,Y-3},{X,Y-4},{X,Y-5},{X,Y-6},{X,Y-7},{X,Y-8},
+                             {X-1,Y},{X-2,Y},{X-3,Y},{X-4,Y},{X-6,Y},{X-7,Y},{X-7,Y-2},{X-7,Y-1},{X-6,Y-1},{X-6,Y-2},{X-6,Y-3},
+                             {X-5,Y+1},{X-5,Y+2},{X-5,Y+3},{X-5,Y+4},{X-5,Y+5},{X-5,Y+6},
+                             {X-2,Y-1},{X-1,Y-1},{X-1,Y-2},{X-1,Y-3},{X-1,Y-4},{X-1,Y-5},{X-1,Y-6},{X-1,Y-7},{X-1,Y+1},{X-1,Y+2},{X-1,Y+3},{X-1,Y+4},{X-1,Y+5},{X-1,Y+6},
+                             {X-2,Y+1},{X-2,Y+2},{X-2,Y+3},{X-2,Y+4},{X-2,Y+5},{X-2,Y+6},{X-2,Y},{X-3,Y+1},{X-3,Y+2},{X-3,Y+3},{X-3,Y+4},{X-3,Y+5},{X-3,Y+6},
+                             {X-4,Y+1},{X-4,Y+2},{X-4,Y+3},{X-4,Y+4},{X-4,Y+5},{X-4,Y+6},{X-6,Y+1},{X-6,Y+2},{X-6,Y+3},{X-6,Y+4},{X-6,Y+5},{X-6,Y+6},{X-7,Y+1},{X-7,Y+1},
+                             {X-7,Y+2},{X-7,Y+3},{X-7,Y+4},{X-7,Y+5},{X-7,Y+6},{X-8,Y+2},{X-8,Y+3},{X-8,Y+4},{X-8,Y+5},{X-8,Y+6},{X-9,Y+3},{X-9,Y+4},{X-9,Y+5},
+                             {X+1,Y},{X+2,Y},{X+3,Y},{X+4,Y},{X+7,Y},
+                             {X+1,Y+1},{X+1,Y+2},{X+1,Y+3},{X+1,Y+4},{X+1,Y+5},{X+1,Y+6},{X+1,Y-1},{X+1,Y-2},{X+1,Y-3},{X+1,Y-4},{X+1,Y-5},{X+1,Y-6},{X+1,Y-7},
+                             {X+2,Y+1},{X+2,Y+2},{X+2,Y+3},{X+2,Y+4},{X+2,Y+5},{X+2,Y+6},{X+3,Y+1},
+                             {X+3,Y+2},{X+3,Y+3},{X+3,Y+4},{X+3,Y+5},{X+3,Y+6},{X+4,Y+2},{X+4,Y+1},{X+4,Y+3},{X+4,Y+4},{X+4,Y+5},{X+4,Y+6},{X+4,X+1},
+                            {X+5,Y+1},{X+5,Y+2},{X+5,Y+3},{X+5,Y+4},{X+5,Y+5},{X+5,Y+6},{X+6,Y+2},{X+6,Y+3},{X+6,Y+4},{X+6,Y+5},{X+6,Y+6},
+                            {X+7,Y+1},{X+7,Y+2},{X+7,Y+3},{X+7,Y+4},{X+7,Y+5},{X+7,Y+6},
+                            {X+8,Y+3},{X+8,Y+4},{X+8,Y+5},{X+8,Y+6},{X+9,Y+4},{X+9,Y+5}};
+                            
+                             
+                                       
+short i;short marime;
+switch(type)
+{
   
-  tft.drawPixel(X,Y,GREEN);
-  tft.drawPixel(X-1,Y,GREEN);
-  tft.drawPixel(X+1,Y,GREEN);
-  tft.drawPixel(X,Y-1,GREEN);
+  case 1:
+   marime=sizeof(defender)/sizeof(defender[0]);
+  for(i=0;i<marime;i++)
+ tft.drawPixel(defender[i].X,defender[i].Y,YELLOW);
+  break;
+  case 2:
+  break;
+  case 3:
+   marime=sizeof(type1)/sizeof(type1[0]);
+  for(i=0;i<marime;i++)
+ tft.drawPixel(type1[i].X,type1[i].Y,CYAN);
+ break;
+ case 4:
+   marime=sizeof(type2)/sizeof(type2[0]);
+  for(i=0;i<marime;i++)
+ tft.drawPixel(type2[i].X,type2[i].Y,TEAL);break;
+  case 5:
+   marime=sizeof(type3)/sizeof(type3[0]);
+  for(i=0;i<marime;i++)
+ tft.drawPixel(type3[i].X,type3[i].Y,WHITE);
+
+  break;
   
+}
 }
 
 void delete_invader(int nr)
@@ -332,7 +384,7 @@ if((shot_fired.X>army[i].X-2 && shot_fired.X<army[i].X+2) && (shot_fired.Y>army[
     delete_shot();
   }
  else if(army[i].Y>=124) game_over();
-  
+    
 }}
 void game_over()
 {
@@ -370,19 +422,22 @@ void moveArmy()
 void Spawn_Level(char X,char Y)
 {
 char i,j;
+char type;
 spawn_defender();
 char original_X=X;
-for(j=0;j<5;j++)
+for(j=0;j<4;j++)
   {
-    for(i=0;i<8;i++)
+    if(j<=1)type=3; else if (j==2) type=4; else if(j==3) type=5;
+    for(i=0;i<5;i++)
     {
-      
-      Spawn_Invader(X,Y);
-      X+=15;
+      Spawn_Invader(X,Y,type);
+      X+=20;
     }
     X=original_X;
-    Y+=11;
+    Y+=20;
   }
+
+spawn_defender();
 
 }
 
@@ -399,7 +454,7 @@ void setup(void) {
 
  
 
-Spawn_Level(3,3);
+Spawn_Level(7,10);
 
 }
 
@@ -407,7 +462,7 @@ Spawn_Level(3,3);
 void loop(){
   while(1)
   {
-  shotTime=millis();
+  /*shotTime=millis();
     currentTime=millis();
     if(shotTime-prevShotTime>=interval2)
     {
@@ -427,11 +482,11 @@ void loop(){
       move_shot();
       moveArmy();
      prevTime=currentTime;
-      
+      */
     
   
   }}
   
-}
+
 
 
